@@ -129,22 +129,14 @@ const PDF = {
         ];
         y = this._fieldGrid(doc, y, margin, contentW, datosB);
 
-        // ── Sección 5: Observaciones ───────────────────────
-        checkPage(30);
-        y = this._sectionHeader(doc, y + 4, margin, contentW, '4', 'OBSERVACIONES');
-        doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(80, 100, 85);
-        doc.text('Observaciones:', margin, y);
-        y += 4;
-        doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(20, 20, 20);
-        const obs = doc.splitTextToSize(anticipo.observaciones || '–', contentW);
-        doc.text(obs, margin, y);
-        y += obs.length * 5 + 4;
-
+        // ── Sección 5: Fecha de ejecución ──────────────────
+        checkPage(20);
+        y = this._sectionHeader(doc, y + 4, margin, contentW, '4', 'FECHA DE EJECUCIÓN');
         doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(80, 100, 85);
         doc.text('Fecha estimada de ejecución del gasto:', margin, y);
         doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(20, 20, 20);
-        doc.text(anticipo.fechaEjecucion ? this._formatDate(anticipo.fechaEjecucion) : '–', margin + 75, y);
-        y += 8;
+        doc.text(anticipo.fechaEjecucion ? this._formatDate(anticipo.fechaEjecucion) : '–', margin + 60, y);
+        y += 10;
 
         // ── Sección 6: Firmas ──────────────────────────────
         checkPage(55);

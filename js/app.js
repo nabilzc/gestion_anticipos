@@ -347,7 +347,7 @@ const App = {
           </div>
         </div>
 
-        <!-- Banco y Observaciones -->
+        <!-- Banco y Fecha de Ejecución -->
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
           <div class="card">
             <div class="card-header"><div class="card-title">Datos bancarios</div></div>
@@ -358,10 +358,9 @@ const App = {
             </div>
           </div>
           <div class="card">
-            <div class="card-header"><div class="card-title">Observaciones</div></div>
+            <div class="card-header"><div class="card-title">Fecha de ejecución</div></div>
             <div class="card-body">
-              <div style="font-size:13px;color:var(--text-secondary);line-height:1.6;">${a.observaciones || '–'}</div>
-              <div style="margin-top:14px;">${this._detailField('Fecha estimada de ejecución', formatDate(a.fechaEjecucion))}</div>
+              <div style="margin-top:4px;">${this._detailField('Fecha estimada de ejecución', formatDate(a.fechaEjecucion))}</div>
             </div>
           </div>
         </div>
@@ -440,7 +439,7 @@ const App = {
         </div>
         <div class="form-group" style="margin-top:18px;">
           <label class="form-label">Comentario del aprobador</label>
-          <textarea class="form-control" id="modal-comentario" rows="2" placeholder="Observaciones..."></textarea>
+          <textarea class="form-control" id="modal-comentario" rows="2" placeholder="Comentarios..."></textarea>
         </div>
         <div style="margin-top:16px;">
           <label class="form-label" style="margin-bottom:8px;">Firma del aprobador</label>
@@ -577,7 +576,7 @@ const App = {
         </div>
         <div class="form-group" style="margin-top:12px;">
           <label class="form-label">Notas de finanzas</label>
-          <textarea class="form-control" id="modal-notas-desembolso" rows="2" placeholder="Número de transferencia, observaciones..."></textarea>
+          <textarea class="form-control" id="modal-notas-desembolso" rows="2" placeholder="Número de transferencia..."></textarea>
         </div>
       </div>
       <div class="modal-footer">
@@ -614,7 +613,7 @@ const App = {
         <p style="color:var(--text-muted);font-size:13px;margin-bottom:16px;">Confirma el cierre del anticipo. Esta acción indica que el empleado legalizó el gasto correctamente.</p>
         <div class="form-group">
           <label class="form-label">Comentario de cierre</label>
-          <textarea class="form-control" id="modal-comentario-cierre" rows="3" placeholder="Observaciones del cierre, documentos entregados, etc."></textarea>
+          <textarea class="form-control" id="modal-comentario-cierre" rows="3" placeholder="Comentarios del cierre, documentos entregados, etc."></textarea>
         </div>
       </div>
       <div class="modal-footer">
@@ -741,7 +740,6 @@ const App = {
         porConceptoDe: 'Gastos de viaje y materiales para visitas de campo región Andina',
         gastos: [{ tipoGasto: 'Viáticos', codigo: 'V-001', descripcion: 'Alimentación 3 días', valor: 150000 }, { tipoGasto: 'Transporte', codigo: 'T-001', descripcion: 'Buses intermunicipales', valor: 80000 }],
         entidad: 'Bancolombia', tipoCuenta: 'Ahorros', numeroCuenta: '1234567890',
-        observaciones: 'Viaje programado a comunidades del programa rural para entrega de materiales educativos.',
         fechaEjecucion: dateStr(-5), estado: 'Anticipo abierto'
       },
       {
@@ -749,7 +747,6 @@ const App = {
         porConceptoDe: 'Compra de materiales educativos y papelería para talleres',
         gastos: [{ tipoGasto: 'Materiales', codigo: 'M-001', descripcion: 'Cuadernos y lapiceros', valor: 220000 }, { tipoGasto: 'Materiales', codigo: 'M-002', descripcion: 'Cartulinas y marcadores', valor: 85000 }],
         entidad: 'Davivienda', tipoCuenta: 'Ahorros', numeroCuenta: '9876543210',
-        observaciones: 'Materiales para 3 talleres de formación en centros comunitarios.',
         fechaEjecucion: dateStr(5), estado: 'Aprobado'
       },
       {
@@ -757,7 +754,6 @@ const App = {
         porConceptoDe: 'Gastos de transporte y comunicaciones para jornada comunitaria',
         gastos: [{ tipoGasto: 'Transporte', codigo: 'T-002', descripcion: 'Flete de chiva', valor: 350000 }],
         entidad: 'Nequi', tipoCuenta: 'Ahorros', numeroCuenta: '3001234567',
-        observaciones: 'Jornada de salud comunitaria en vereda El Progreso.',
         fechaEjecucion: dateStr(2), estado: 'Cerrado'
       },
     ];

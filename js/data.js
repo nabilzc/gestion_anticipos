@@ -58,7 +58,6 @@ const DB = {
         numeroCuenta: data.numeroCuenta || '',
       },
       // Sección 5
-      observaciones: data.observaciones || '',
       fechaEjecucion: data.fechaEjecucion || '',
       // Sección 6
       firmasSolicitante: data.firmaSolicitante || null,

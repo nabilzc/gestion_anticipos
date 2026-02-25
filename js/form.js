@@ -179,22 +179,16 @@ const Form = {
             </div>
           </div>
 
-          <!-- S5: Observaciones -->
+          <!-- S5: Fecha de ejecución -->
           <div class="form-section">
             <div class="form-section-header">
               <div class="form-section-num">5</div>
-              <div class="form-section-title">Observaciones y fecha de ejecución</div>
+              <div class="form-section-title">Fecha estimada de ejecución</div>
             </div>
             <div class="form-section-body">
-              <div class="form-grid">
-                <div class="form-group form-group-full">
-                  <label class="form-label">Observaciones<span class="req">*</span></label>
-                  <textarea class="form-control" id="f-observaciones" rows="3" placeholder="Detalle el uso previsto del anticipo, justificación y cualquier información relevante..."></textarea>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Fecha estimada de ejecución del gasto<span class="req">*</span></label>
-                  <input type="date" class="form-control" id="f-fecha-ejecucion" min="${new Date().toISOString().split('T')[0]}" />
-                </div>
+              <div class="form-group" style="max-width:320px;">
+                <label class="form-label">Fecha estimada de ejecución del gasto<span class="req">*</span></label>
+                <input type="date" class="form-control" id="f-fecha-ejecucion" min="${new Date().toISOString().split('T')[0]}" />
               </div>
             </div>
           </div>
@@ -473,7 +467,6 @@ const Form = {
         'f-concepto': 'Por concepto de',
         'f-banco': 'Entidad bancaria',
         'f-num-cuenta': 'Número de cuenta',
-        'f-observaciones': 'Observaciones',
         'f-fecha-ejecucion': 'Fecha de ejecución',
       };
 
@@ -525,7 +518,6 @@ const Form = {
         entidad: document.getElementById('f-banco')?.value || '',
         tipoCuenta: document.getElementById('f-tipo-cuenta')?.value || 'Ahorros',
         numeroCuenta: document.getElementById('f-num-cuenta')?.value || '',
-        observaciones: document.getElementById('f-observaciones')?.value || '',
         fechaEjecucion: document.getElementById('f-fecha-ejecucion')?.value || '',
         firmaSolicitante: this._firmaSolicitanteData,
       };

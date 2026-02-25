@@ -3,30 +3,30 @@
  */
 
 const Reports = {
-    render() {
-        const stats = DB.getStats();
-        const todos = DB.getAll();
+  render() {
+    const stats = DB.getStats();
+    const todos = DB.getAll();
 
-        // Por empleado (abiertos)
-        const porEmpleado = stats.porEmpleado;
-        const maxEmp = Math.max(1, ...Object.values(porEmpleado));
+    // Por empleado (abiertos)
+    const porEmpleado = stats.porEmpleado;
+    const maxEmp = Math.max(1, ...Object.values(porEmpleado));
 
-        // Por proyecto
-        const porProyecto = stats.porProyecto;
-        const maxProy = Math.max(1, ...Object.values(porProyecto).map(v => v.total));
+    // Por proyecto
+    const porProyecto = stats.porProyecto;
+    const maxProy = Math.max(1, ...Object.values(porProyecto).map(v => v.total));
 
-        // Historial reciente (últimas 15 acciones)
-        const historialAll = [];
-        todos.forEach(a => {
-            (a.historial || []).forEach(h => { historialAll.push({ ...h, antiId: a.id, nombre: a.solicitante.nombre }); });
-        });
-        historialAll.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
-        const histReciente = historialAll.slice(0, 15);
+    // Historial reciente (últimas 15 acciones)
+    const historialAll = [];
+    todos.forEach(a => {
+      (a.historial || []).forEach(h => { historialAll.push({ ...h, antiId: a.id, nombre: a.solicitante.nombre }); });
+    });
+    historialAll.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+    const histReciente = historialAll.slice(0, 15);
 
-        const formatMoney = n => `$ ${(parseFloat(n) || 0).toLocaleString('es-CO', { minimumFractionDigits: 0 })}`;
-        const formatDate = d => d ? new Date(d).toLocaleDateString('es-CO') : '–';
+    const formatMoney = n => `$ ${(parseFloat(n) || 0).toLocaleString('es-CO', { minimumFractionDigits: 0 })}`;
+    const formatDate = d => d ? new Date(d).toLocaleDateString('es-CO') : '–';
 
-        return `
+    return `
       <div class="kpi-grid">
         <div class="kpi-card lime">
           <div class="kpi-icon lime"><i class="fa fa-list"></i></div>
@@ -71,8 +71,8 @@ const Reports = {
           </div>
           <div class="card-body">
             ${Object.keys(porEmpleado).length === 0
-                ? '<p class="text-muted text-sm">Sin datos</p>'
-                : Object.entries(porEmpleado).map(([nombre, cant]) => `
+        ? '<p class="text-muted text-sm">Sin datos</p>'
+        : Object.entries(porEmpleado).map(([nombre, cant]) => `
                 <div class="chart-bar-row" style="margin-bottom:10px;">
                   <div class="chart-bar-label">${nombre}</div>
                   <div class="chart-bar">
@@ -94,8 +94,8 @@ const Reports = {
           </div>
           <div class="card-body">
             ${Object.keys(porProyecto).length === 0
-                ? '<p class="text-muted text-sm">Sin datos</p>'
-                : Object.entries(porProyecto).map(([proy, data]) => `
+        ? '<p class="text-muted text-sm">Sin datos</p>'
+        : Object.entries(porProyecto).map(([proy, data]) => `
                 <div class="chart-bar-row" style="margin-bottom:10px;">
                   <div class="chart-bar-label">${proy}</div>
                   <div class="chart-bar">
@@ -136,8 +136,8 @@ const Reports = {
             </tr></thead>
             <tbody>
               ${histReciente.length === 0
-                ? `<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">📋</div><div class="empty-text">Sin actividad registrada</div></div></td></tr>`
-                : histReciente.map(h => `
+        ? `<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">📋</div><div class="empty-text">Sin actividad registrada</div></div></td></tr>`
+        : histReciente.map(h => `
                 <tr>
                   <td>${formatDate(h.fecha)}</td>
                   <td><a href="#" onclick="App.navegarA('detalle','${h.antiId}');return false;" style="color:var(--accent-dark);font-weight:600;">${h.antiId}</a></td>
@@ -150,20 +150,20 @@ const Reports = {
         </div>
       </div>
     `;
-    },
+  },
 
-    _tablaVencidos() {
-        const vencidos = DB.getVencidos();
-        if (vencidos.length === 0) {
-            return `<div class="empty-state"><div class="empty-icon">✅</div><div class="empty-text">No hay anticipos vencidos. ¡Excelente!</div></div>`;
-        }
-        const formatMoney = n => `$ ${(parseFloat(n) || 0).toLocaleString('es-CO', { minimumFractionDigits: 0 })}`;
-        return `<table>
+  _tablaVencidos() {
+    const vencidos = DB.getVencidos();
+    if (vencidos.length === 0) {
+      return `<div class="empty-state"><div class="empty-icon">✅</div><div class="empty-text">No hay anticipos vencidos. ¡Excelente!</div></div>`;
+    }
+    const formatMoney = n => `$ ${(parseFloat(n) || 0).toLocaleString('es-CO', { minimumFractionDigits: 0 })}`;
+    return `<table>
       <thead><tr><th>ID</th><th>Solicitante</th><th>Proyecto</th><th>Valor</th><th>Días vencido</th><th>Acciones</th></tr></thead>
       <tbody>
         ${vencidos.map(a => {
-            const dias = DB.diasVencidos(a);
-            return `<tr>
+      const dias = DB.diasVencidos(a);
+      return `<tr>
             <td><a href="#" onclick="App.navegarA('detalle','${a.id}');return false;" style="color:var(--accent-dark);font-weight:700;">${a.id}</a></td>
             <td>${a.solicitante.nombre}</td>
             <td>${a.solicitante.proyecto || '–'}</td>
@@ -175,36 +175,36 @@ const Reports = {
               </button>
             </td>
           </tr>`;
-        }).join('')}
+    }).join('')}
       </tbody>
     </table>`;
-    },
+  },
 
-    _badge(estado) {
-        const map = {
-            'Borrador': 'badge-borrador', 'Enviado': 'badge-enviado',
-            'En revisión': 'badge-revision', 'Aprobado': 'badge-aprobado',
-            'Aprobado con ajustes': 'badge-ajustes', 'Rechazado': 'badge-rechazado',
-            'Desembolsado': 'badge-desembolsado', 'Anticipo abierto': 'badge-abierto',
-            'Vencido': 'badge-vencido', 'Cerrado': 'badge-cerrado',
-        };
-        return `<span class="badge ${map[estado] || 'badge-borrador'}">${estado}</span>`;
-    },
+  _badge(estado) {
+    const map = {
+      'Borrador': 'badge-borrador', 'Enviado': 'badge-enviado',
+      'En revisión': 'badge-revision', 'Aprobado': 'badge-aprobado',
+      'Aprobado con ajustes': 'badge-ajustes', 'Rechazado': 'badge-rechazado',
+      'Desembolsado': 'badge-desembolsado', 'Anticipo abierto': 'badge-abierto',
+      'Vencido': 'badge-vencido', 'Cerrado': 'badge-cerrado',
+    };
+    return `<span class="badge ${map[estado] || 'badge-borrador'}">${estado}</span>`;
+  },
 
-    exportarCSV() {
-        const todos = DB.getAll();
-        const cols = ['ID', 'Estado', 'Fecha', 'Solicitante', 'Cargo', 'Proyecto', 'Por Concepto De', 'Total', 'Entidad Bancaria', 'Fecha Ejecución', 'Observaciones'];
-        const rows = todos.map(a => [
-            a.id, a.estado, a.fecha, a.solicitante.nombre, a.solicitante.cargo,
-            a.solicitante.proyecto, a.porConceptoDe, a.totalValor,
-            (a.banco || {}).entidad, a.fechaEjecucion, a.observaciones
-        ].map(v => `"${(v || '').toString().replace(/"/g, '""')}"`));
-        const csv = [cols.join(','), ...rows.map(r => r.join(','))].join('\n');
-        const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url; a.download = 'anticipos_fundaec.csv'; a.click();
-        URL.revokeObjectURL(url);
-        App.toast('CSV exportado exitosamente', 'success');
-    }
+  exportarCSV() {
+    const todos = DB.getAll();
+    const cols = ['ID', 'Estado', 'Fecha', 'Solicitante', 'Cargo', 'Proyecto', 'Por Concepto De', 'Total', 'Entidad Bancaria', 'Fecha Ejecución'];
+    const rows = todos.map(a => [
+      a.id, a.estado, a.fecha, a.solicitante.nombre, a.solicitante.cargo,
+      a.solicitante.proyecto, a.porConceptoDe, a.totalValor,
+      (a.banco || {}).entidad, a.fechaEjecucion
+    ].map(v => `"${(v || '').toString().replace(/"/g, '""')}"`));
+    const csv = [cols.join(','), ...rows.map(r => r.join(','))].join('\n');
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'anticipos_fundaec.csv'; a.click();
+    URL.revokeObjectURL(url);
+    App.toast('CSV exportado exitosamente', 'success');
+  }
 };
