@@ -53,3 +53,16 @@ Este es un sistema ERP ligero diseñado para FUNDAEC, enfocado en la gestión, a
 
 ---
 *Desarrollado para la eficiencia administrativa y transparencia financiera de FUNDAEC.*
+
+## 🚀 Próximas Funcionalidades (Roadmap)
+
+### 9. Módulo de Legalización de Anticipos
+Para completar el ciclo financiero, se integrará un módulo de legalización que permita:
+- **Carga de Documentación**: Soporte para subir facturas en formato **PDF** e imágenes (**JPG, PNG**).
+- **Procesamiento de Datos**: Importación de plantillas de **Excel** para el desglose masivo de gastos ejecutados.
+- **Validación de Soportes**: Previsualización de archivos dentro de la plataforma antes del envío final.
+- **Conciliación Automática**: Cruce entre el monto solicitado originalmente y el total legalizado con facturas.
+
+### 🔐 Seguridad y Acceso
+- **SSO con Google Workspace**: Acceso unificado mediante cuentas corporativas `@fundaec.org`.
+- **Verificación por Correo**: Notificaciones automáticas a Gmail sobre el estado de las legalizaciones y alertas de documentos pendientes.
