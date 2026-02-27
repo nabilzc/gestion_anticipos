@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asistente Financiero FUNDAEC</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="landing-wrapper">
+        <header class="navbar">
+            <nav class="nav-content">
+                <a href="#" class="nav-brand">
+                    FUNDAEC
+                </a>
+                <div class="nav-links">
+                    <a href="#">Nosotros</a>
+                    <a href="#">Programas</a>
+                    <a href="#">Educación</a>
+                    <a href="#">Actualidad</a>
+                    <a href="#" class="nav-cta">Donaciones</a>
+                </div>
+            </nav>
+        </header>
+
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Conversaciones inteligentes sobre nuestras Políticas Financieras</h1>
+                <p>Interactúa con nuestro asistente inteligente diseñado para ayudarte a navegar el manual de políticas
+                    y procedimientos de FUNDAEC de manera instantánea.</p>
+                <div class="hero-btns">
+                    <a href="#chat" class="btn btn-primary">Empezar a chatear</a>
+                    <a href="#" class="btn btn-secondary">Ver Manual</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="app-section" id="chat">
+            <div class="app-container">
+                <aside class="chat-sidebar">
+                    <div class="sidebar-header">
+                        <button class="new-chat-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Nuevo Chat
+                        </button>
+                    </div>
+                </aside>
+
+                <main class="chat-view">
+                    <header class="chat-header">
+                        <div class="header-title">
+                            <div class="avatar">F</div>
+                            Asistente Financiero
+                        </div>
+                        <span class="status-online">● En línea</span>
+                    </header>
+
+                    <div class="chat-area" id="messagelist">
+                        <div class="message bot-message">
+                            <div class="message-content">
+                                👋 <b>Hola. Soy el Asistente Financiero de FUNDAEC.</b><br><br>
+                                Estoy aquí para ayudarte con consultas sobre el <i>Manual de Políticas y Procedimientos
+                                    Financieros</i>.<br><br>
+                                ¿En qué puedo asistirte hoy?
+                            </div>
+                        </div>
+                    </div>
+
+                    <footer class="input-area">
+                        <form id="chat-form">
+                            <div class="input-wrapper">
+                                <input type="text" id="user-input" placeholder="Escribe tu pregunta aquí..."
+                                    autocomplete="off">
+                                <button type="submit" id="send-btn">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                    </svg>
+                                </button>
+                            </div>
+                        </form>
+                        <p class="disclaimer">Respondo únicamente base al Manual de Políticas y Procedimientos
+                            Financieros - FUNDAEC</p>
+                    </footer>
+                </main>
+            </div>
+        </section>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
