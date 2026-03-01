@@ -118,6 +118,7 @@ const App = {
       'reportes': 'Reportes',
       'detalle': 'Detalle del Anticipo',
       'admin-panel': 'Administración',
+      'legalizaciones': 'Legalización y Cierre',
     };
     document.getElementById('page-title').textContent = pageTitles[pagina] || pagina;
 
@@ -136,6 +137,7 @@ const App = {
       case 'reportes': this._renderReportes(); break;
       case 'detalle': this._renderDetalle(id); break;
       case 'admin-panel': this._renderAdmin(); break;
+      case 'legalizaciones': document.getElementById('page-content').innerHTML = Legalization.render(); break;
       default: content.innerHTML = '<p class="text-muted">Página no encontrada.</p>';
     }
   },
@@ -225,6 +227,16 @@ const App = {
   },
 
   exportarCSV() { Reports.exportarCSV(); },
+  descargarPDF(id) {
+    try {
+      const a = DB.getById(id);
+      if (!a) { this.toast('Anticipo no encontrado', 'error'); return; }
+      PDF.generar(a);
+    } catch (e) {
+      console.error('Error al generar PDF:', e);
+      this.toast('Error al generar el PDF. Revisa la consola.', 'error');
+    }
+  },
 
   // ── ADMIN ────────────────────────────────────────────
   _renderAdmin() {
@@ -282,11 +294,17 @@ const App = {
     if (a.estado === 'Desembolsado' && Auth.can('desembolsar')) {
       acciones += `<button class="btn-primary" onclick="App._marcarAbierto('${a.id}')"><i class="fa fa-folder-open"></i> Marcar anticipo abierto</button>`;
     }
+    if (['Anticipo abierto', 'Vencido'].includes(a.estado) && a.solicitante.correo === session.email) {
+      acciones += `<button class="btn-primary" style="background:var(--purple);" onclick="Legalization.abrirFormulario('${a.id}')"><i class="fa fa-file-invoice-dollar"></i> Registrar Legalización</button>`;
+    }
+    if (a.estado === 'Legalización enviada' && Auth.can('cerrar')) {
+      acciones += `<button class="btn-primary" style="background:var(--green);" onclick="App._abrirModalFirmaYCerrar('${a.id}')"><i class="fa fa-circle-check"></i> Revisar y Cerrar</button>`;
+    }
     if (['Anticipo abierto', 'Vencido'].includes(a.estado) && Auth.can('cerrar')) {
       acciones += `<button class="btn-primary" onclick="App._abrirModalFirmaYCerrar('${a.id}')"><i class="fa fa-circle-check"></i> Cerrar anticipo</button>`;
     }
     // PDF siempre disponible
-    acciones += `<button class="btn-secondary" onclick="PDF.generar(DB.getById('${a.id}'))"><i class="fa fa-file-pdf"></i> Descargar PDF</button>`;
+    acciones += `<button class="btn-secondary" onclick="App.descargarPDF('${a.id}')"><i class="fa fa-file-pdf"></i> Descargar PDF</button>`;
 
     document.getElementById('page-content').innerHTML = `
       <div style="max-width:820px;margin:0 auto;">
@@ -358,9 +376,10 @@ const App = {
             </div>
           </div>
           <div class="card">
-            <div class="card-header"><div class="card-title">Fecha de ejecución</div></div>
+            <div class="card-header"><div class="card-title">Fecha de ejecución y observaciones</div></div>
             <div class="card-body">
               <div style="margin-top:4px;">${this._detailField('Fecha estimada de ejecución', formatDate(a.fechaEjecucion))}</div>
+              <div style="margin-top:12px;">${this._detailField('Observaciones', a.observaciones)}</div>
             </div>
           </div>
         </div>
@@ -379,6 +398,28 @@ const App = {
             </div>
           </div>
         </div>
+
+        <!-- Legalización (si existe) -->
+        ${a.legalizacion ? `
+        <div class="card">
+          <div class="card-header"><div class="card-title">Soportes de Legalización</div></div>
+          <div class="card-body">
+            <p class="text-sm text-muted mb-4">Enviado por ${a.legalizacion.usuario} el ${new Date(a.legalizacion.fechaEnvio).toLocaleString('es-CO')}</p>
+            <div style="margin-bottom:14px;">
+              <div class="detail-field-label">Comentarios</div>
+              <div class="detail-field-value" style="margin-top:4px;">${a.legalizacion.comentarios || '–'}</div>
+            </div>
+            <div class="file-list">
+              ${(a.legalizacion.archivos || []).map(f => `
+                <div class="file-item">
+                  <div class="file-icon"><i class="fa ${Legalization._getFileIcon(f.name)}"></i></div>
+                  <div class="file-info"><div class="file-name">${f.name}</div></div>
+                  <a href="${f.data}" download="${f.name}" class="btn-icon" title="Descargar"><i class="fa fa-download"></i></a>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>` : ''}
 
         <!-- Historial -->
         <div class="card">

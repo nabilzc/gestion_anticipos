@@ -12,6 +12,7 @@
     rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="css/styles.css" />
+  <img src="assets/logo.png" id="pdf-logo" style="display:none;" alt="pdf-logo">
 </head>
 
 <body>
@@ -24,18 +25,12 @@
       <div class="shape shape-3"></div>
     </div>
     <div class="login-card">
-      <div class="login-logo">
-        <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
-          <rect width="52" height="52" rx="14" fill="#2563eb" />
-          <text x="26" y="34" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="800"
-            fill="#ffffff">FUND</text>
-          <text x="26" y="46" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" font-weight="600"
-            fill="#ffffff">AEC</text>
-        </svg>
-        <div class="login-logo-text">
-          <h1>FUNDAEC</h1>
-          <p>Sistema de Anticipos</p>
-        </div>
+      <div class="login-logo"
+        style="display: flex; flex-direction: column; align-items: center; gap: 0; margin-bottom: 35px; width: 100%;">
+        <img src="assets/logo.png" alt="Logo FUNDAEC" style="width: 100%; max-width: 340px; height: auto;">
+        <p
+          style="font-size: 14px; color: var(--text-muted); font-weight: 500; margin-top: -5px; letter-spacing: 0.5px;">
+          Sistema de Anticipos</p>
       </div>
       <h2 class="login-title">Bienvenido de vuelta</h2>
       <p class="login-subtitle">Ingresa con tu correo corporativo</p>
@@ -76,18 +71,12 @@
     <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
-        <div class="sidebar-logo">
-          <svg width="36" height="36" viewBox="0 0 52 52" fill="none">
-            <rect width="52" height="52" rx="12" fill="#2563eb" />
-            <text x="26" y="34" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="800"
-              fill="#ffffff">FUND</text>
-            <text x="26" y="46" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" font-weight="600"
-              fill="#ffffff">AEC</text>
-          </svg>
-          <div>
-            <span class="sidebar-brand">FUNDAEC</span>
-            <span class="sidebar-sub">Gestión Financiera</span>
-          </div>
+        <div class="sidebar-logo"
+          style="display: flex; flex-direction: column; align-items: flex-start; gap: 0; padding: 5px 0;">
+          <img src="assets/logo.png" alt="Logo FUNDAEC"
+            style="width: 100%; max-width: 180px; height: auto; margin-left: -5px;">
+          <span class="sidebar-sub" style="margin-left: 4px; font-size: 10px; margin-top: -4px; opacity: 0.7;">Gestión
+            Financiera</span>
         </div>
         <button class="sidebar-toggle" id="sidebar-toggle"><i class="fa fa-bars"></i></button>
       </div>
@@ -116,6 +105,10 @@
         </a>
         <a href="#" class="nav-item" data-page="admin-panel" id="nav-admin-panel" style="display:none">
           <i class="fa fa-sliders"></i><span>Administración</span>
+        </a>
+        <a href="#" class="nav-item" data-page="legalizaciones" id="nav-legalizaciones">
+          <i class="fa fa-file-invoice-dollar"></i><span>Legalizaciones</span>
+          <span class="nav-badge" id="badge-legalizaciones" style="display:none"></span>
         </a>
 
         <div class="nav-section-label">SOPORTE</div>
@@ -181,6 +174,7 @@
 
   <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>window.jsPDF = window.jspdf ? window.jspdf.jsPDF : window.jsPDF;</script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
   <script src="js/data.js"></script>
   <script src="js/auth.js"></script>
@@ -188,6 +182,7 @@
   <script src="js/reminders.js"></script>
   <script src="js/reports.js"></script>
   <script src="js/form.js"></script>
+  <script src="js/legalization.js"></script>
   <script src="js/app.js"></script>
 
   <script>

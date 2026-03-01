@@ -71,6 +71,18 @@ const Reminders = {
             });
         }
 
+        // Anticipos legales pendientes de revisión (para tesorería/aprobador)
+        const porCerrar = DB.getAll().filter(a => a.estado === 'Legalización enviada');
+        if (porCerrar.length > 0 && Auth.can('cerrar')) {
+            notifs.push({
+                tipo: 'blue',
+                icono: 'fa-file-invoice-dollar',
+                titulo: 'Legalizaciones pendientes',
+                texto: `${porCerrar.length} legalización(es) por revisar y cerrar`,
+                id: null
+            });
+        }
+
         return notifs;
     },
 
@@ -110,6 +122,25 @@ const Reminders = {
                 badgeMis.textContent = misVencidos.length;
             } else {
                 badgeMis.style.display = 'none';
+            }
+        }
+
+        // Badge de Legalizaciones
+        const badgeLeg = document.getElementById('badge-legalizaciones');
+        if (badgeLeg) {
+            let count = 0;
+            if (Auth.can('cerrar')) {
+                count = DB.getAll().filter(a => a.estado === 'Legalización enviada').length;
+            } else {
+                count = DB.getAbiertos(session?.email).filter(a => ['Anticipo abierto', 'Vencido'].includes(a.estado)).length;
+            }
+
+            if (count > 0) {
+                badgeLeg.style.display = 'flex';
+                badgeLeg.textContent = count;
+                badgeLeg.className = 'nav-badge' + (Auth.can('cerrar') ? ' blue' : ' warn');
+            } else {
+                badgeLeg.style.display = 'none';
             }
         }
     },

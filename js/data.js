@@ -57,6 +57,8 @@ const DB = {
         tipoCuenta: data.tipoCuenta || 'Ahorros',
         numeroCuenta: data.numeroCuenta || '',
       },
+      // Sección especial
+      observaciones: data.observaciones || '',
       // Sección 5
       fechaEjecucion: data.fechaEjecucion || '',
       // Sección 6

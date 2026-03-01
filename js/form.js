@@ -28,6 +28,22 @@ const Form = {
            <div><strong style="color:#854d0e;">Advertencia:</strong> Tienes 1 anticipo abierto. El aprobador será notificado automáticamente.</div>
          </div>` : '';
 
+    // LÓGICA DE PRE-CARGA: Buscar el último anticipo de este usuario
+    const misAnticipos = DB.getByEmail(session.email);
+    const ultimo = misAnticipos.length > 0 ? misAnticipos.sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion))[0] : null;
+
+    // Valores por defecto (del último anticipo o de la sesión)
+    const val = {
+      tipoDoc: ultimo?.solicitante?.tipoDocumento || 'CC',
+      numDoc: ultimo?.solicitante?.numeroDocumento || '',
+      cargo: ultimo?.solicitante?.cargo || session.cargo || '',
+      proyecto: ultimo?.solicitante?.proyecto || session.proyecto || '',
+      contacto: ultimo?.solicitante?.contacto || '',
+      banco: ultimo?.banco?.entidad || '',
+      tipoCuenta: ultimo?.banco?.tipoCuenta || 'Ahorros',
+      numCuenta: ultimo?.banco?.numeroCuenta || '',
+    };
+
     const hoy = new Date().toLocaleDateString('es-CO', { day: '2-digit', month: '2-digit', year: 'numeric' });
     const proyectos = ['Programa Rural Andino', 'Programa Educativo Sur', 'Programa Urbano Norte', 'Administración', 'Proyecto CEBV', 'Proyecto Tutores', 'Otro'];
     const tiposGasto = ['Viáticos', 'Transporte', 'Materiales', 'Alimentación', 'Hospedaje', 'Servicios', 'Comunicaciones', 'Otros'];
@@ -44,9 +60,16 @@ const Form = {
               <div class="form-section-title">Fecha de la solicitud</div>
             </div>
             <div class="form-section-body">
-              <div class="form-group" style="max-width:280px;">
-                <label class="form-label">Fecha</label>
-                <input type="text" class="form-control" id="f-fecha" value="${hoy}" readonly style="background:var(--bg);" />
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label">Fecha</label>
+                  <input type="text" class="form-control" id="f-fecha" value="${hoy}" readonly style="background:var(--bg);" />
+                </div>
+                <div class="form-group" id="f-precarga-msg" style="${ultimo ? '' : 'display:none;'}">
+                  <div style="font-size:12px;color:var(--green);background:var(--green-light);padding:8px;border-radius:var(--radius-sm);margin-top:22px;">
+                    <i class="fa fa-info-circle"></i> Información básica precargada de tu última solicitud.
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -66,24 +89,24 @@ const Form = {
                 <div class="form-group">
                   <label class="form-label">Tipo de documento<span class="req">*</span></label>
                   <select class="form-control" id="f-tipo-doc">
-                    <option value="CC">CC – Cédula de Ciudadanía</option>
-                    <option value="CE">CE – Cédula de Extranjería</option>
-                    <option value="PA">PA – Pasaporte</option>
+                    <option value="CC"${val.tipoDoc === 'CC' ? ' selected' : ''}>CC – Cédula de Ciudadanía</option>
+                    <option value="CE"${val.tipoDoc === 'CE' ? ' selected' : ''}>CE – Cédula de Extranjería</option>
+                    <option value="PA"${val.tipoDoc === 'PA' ? ' selected' : ''}>PA – Pasaporte</option>
                   </select>
                 </div>
                 <div class="form-group">
                   <label class="form-label">Número de documento<span class="req">*</span></label>
-                  <input type="text" class="form-control" id="f-num-doc" placeholder="Ej: 1234567890" />
+                  <input type="text" class="form-control" id="f-num-doc" value="${val.numDoc}" placeholder="Ej: 1234567890" />
                 </div>
                 <div class="form-group">
                   <label class="form-label">Cargo</label>
-                  <input type="text" class="form-control" id="f-cargo" value="${session.cargo || ''}" />
+                  <input type="text" class="form-control" id="f-cargo" value="${val.cargo}" />
                 </div>
                 <div class="form-group">
                   <label class="form-label">Proyecto / Programa<span class="req">*</span></label>
                   <select class="form-control" id="f-proyecto">
                     <option value="">— Seleccione —</option>
-                    ${proyectos.map(p => `<option value="${p}"${session.proyecto === p ? ' selected' : ''}>${p}</option>`).join('')}
+                    ${proyectos.map(p => `<option value="${p}"${val.proyecto === p ? ' selected' : ''}>${p}</option>`).join('')}
                   </select>
                 </div>
                 <div class="form-group">
@@ -92,7 +115,7 @@ const Form = {
                 </div>
                 <div class="form-group">
                   <label class="form-label">Número de contacto<span class="req">*</span></label>
-                  <input type="tel" class="form-control" id="f-contacto" placeholder="Ej: 3001234567" />
+                  <input type="tel" class="form-control" id="f-contacto" value="${val.contacto}" placeholder="Ej: 3001234567" />
                 </div>
               </div>
             </div>
@@ -152,43 +175,40 @@ const Form = {
                   <label class="form-label">Entidad bancaria<span class="req">*</span></label>
                   <select class="form-control" id="f-banco">
                     <option value="">— Seleccione —</option>
-                    <option>Bancolombia</option>
-                    <option>Davivienda</option>
-                    <option>Banco de Bogotá</option>
-                    <option>BBVA</option>
-                    <option>Nequi</option>
-                    <option>Daviplata</option>
-                    <option>Banco Popular</option>
-                    <option>Scotiabank Colpatria</option>
-                    <option>Banco AV Villas</option>
-                    <option>Otro</option>
+                    ${['Bancolombia', 'Davivienda', 'Banco de Bogotá', 'BBVA', 'Nequi', 'Daviplata', 'Banco Popular', 'Scotiabank Colpatria', 'Banco AV Villas', 'Otro'].map(b => `<option${val.banco === b ? ' selected' : ''}>${b}</option>`).join('')}
                   </select>
                 </div>
                 <div class="form-group">
                   <label class="form-label">Tipo de cuenta<span class="req">*</span></label>
                   <select class="form-control" id="f-tipo-cuenta">
-                    <option value="Ahorros">Cuenta de Ahorros</option>
-                    <option value="Corriente">Cuenta Corriente</option>
+                    <option value="Ahorros"${val.tipoCuenta === 'Ahorros' ? ' selected' : ''}>Cuenta de Ahorros</option>
+                    <option value="Corriente"${val.tipoCuenta === 'Corriente' ? ' selected' : ''}>Cuenta Corriente</option>
                   </select>
                 </div>
                 <div class="form-group">
                   <label class="form-label">Número de cuenta<span class="req">*</span></label>
-                  <input type="text" class="form-control" id="f-num-cuenta" placeholder="Ej: 12345678901" />
+                  <input type="text" class="form-control" id="f-num-cuenta" value="${val.numCuenta}" placeholder="Ej: 12345678901" />
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- S5: Fecha de ejecución -->
+          <!-- S5: Otras informaciones -->
           <div class="form-section">
             <div class="form-section-header">
               <div class="form-section-num">5</div>
-              <div class="form-section-title">Fecha estimada de ejecución</div>
+              <div class="form-section-title">Información adicional</div>
             </div>
             <div class="form-section-body">
-              <div class="form-group" style="max-width:320px;">
-                <label class="form-label">Fecha estimada de ejecución del gasto<span class="req">*</span></label>
-                <input type="date" class="form-control" id="f-fecha-ejecucion" min="${new Date().toISOString().split('T')[0]}" />
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label">Fecha estimada de ejecución<span class="req">*</span></label>
+                  <input type="date" class="form-control" id="f-fecha-ejecucion" min="${new Date().toISOString().split('T')[0]}" />
+                </div>
+                <div class="form-group" style="grid-column: span 2;">
+                  <label class="form-label">Observaciones</label>
+                  <textarea class="form-control" id="f-observaciones" rows="1" placeholder="Información adicional o aclaraciones..."></textarea>
+                </div>
               </div>
             </div>
           </div>
@@ -519,6 +539,7 @@ const Form = {
         tipoCuenta: document.getElementById('f-tipo-cuenta')?.value || 'Ahorros',
         numeroCuenta: document.getElementById('f-num-cuenta')?.value || '',
         fechaEjecucion: document.getElementById('f-fecha-ejecucion')?.value || '',
+        observaciones: document.getElementById('f-observaciones')?.value || '',
         firmaSolicitante: this._firmaSolicitanteData,
       };
 
