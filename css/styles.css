@@ -960,98 +960,107 @@ textarea {
    ===================================================== */
 .kpi-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 16px;
   margin-bottom: 24px;
 }
 
 .kpi-card {
-  background: var(--surface);
-  border-radius: var(--radius);
-  padding: 24px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 20px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
   transition: all var(--transition);
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .kpi-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--accent-glow);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.12);
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.8);
 }
 
 .kpi-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
+  content: none;
 }
 
-.kpi-card.blue::before {
-  background: var(--blue);
+.kpi-card.blue {
+  background: rgba(37, 99, 235, 0.08);
+  border-color: rgba(37, 99, 235, 0.15);
 }
 
-.kpi-card.green::before {
-  background: var(--green);
+.kpi-card.green {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.15);
 }
 
-.kpi-card.red::before {
-  background: var(--red);
+.kpi-card.red {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.15);
 }
 
-.kpi-card.yellow::before {
-  background: var(--yellow);
+.kpi-card.yellow {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.15);
 }
 
-.kpi-card.lime::before {
-  background: var(--accent);
+.kpi-card.lime {
+  background: rgba(181, 226, 77, 0.12);
+  border-color: rgba(181, 226, 77, 0.2);
 }
 
 .kpi-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 10px;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
-  margin-bottom: 14px;
+  font-size: 16px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
 }
 
 .kpi-icon.blue {
-  background: var(--blue-light);
-  color: var(--blue);
+  background: #eff6ff;
+  color: #2563eb;
 }
 
 .kpi-icon.green {
-  background: var(--green-light);
-  color: var(--green);
+  background: #ecfdf5;
+  color: #10b981;
 }
 
 .kpi-icon.red {
-  background: var(--red-light);
-  color: var(--red);
+  background: #fef2f2;
+  color: #ef4444;
 }
 
 .kpi-icon.yellow {
-  background: var(--yellow-light);
-  color: var(--yellow);
+  background: #fffbeb;
+  color: #f59e0b;
 }
 
 .kpi-icon.lime {
-  background: var(--blue-light);
-  color: var(--blue);
+  background: #f7fee7;
+  color: #84cc16;
 }
 
 .kpi-value {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 800;
   color: var(--text-primary);
-  letter-spacing: -1px;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
 }
 
 .kpi-label {
@@ -1062,7 +1071,7 @@ textarea {
 }
 
 .kpi-value.money {
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .card {
